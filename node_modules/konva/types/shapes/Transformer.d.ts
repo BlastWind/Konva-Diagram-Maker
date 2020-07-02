@@ -1,0 +1,88 @@
+import { Node } from '../Node';
+import { Rect } from './Rect';
+import { Group } from '../Group';
+import { ContainerConfig } from '../Container';
+import { GetSet, IRect } from '../types';
+interface Box extends IRect {
+    rotation: number;
+}
+export interface TransformerConfig extends ContainerConfig {
+    resizeEnabled?: boolean;
+    rotateEnabled?: boolean;
+    rotationSnaps?: Array<number>;
+    rotateAnchorOffset?: number;
+    borderEnabled?: boolean;
+    borderStroke?: string;
+    borderStrokeWidth?: number;
+    borderDash?: Array<number>;
+    anchorFill?: string;
+    anchorStroke?: string;
+    anchorStrokeWidth?: number;
+    anchorSize?: number;
+    keepRatio?: boolean;
+    centeredScaling?: boolean;
+    enabledAnchors?: Array<string>;
+    node?: Rect;
+    boundBoxFunc?: (oldBox: Box, newBox: Box) => Box;
+}
+export declare class Transformer extends Group {
+    _node: Node;
+    movingResizer: string;
+    _transforming: boolean;
+    sin: number;
+    cos: number;
+    _cursorChange: boolean;
+    constructor(config?: TransformerConfig);
+    attachTo(node: any): this;
+    setNode(node: any): this;
+    getNode(): Node<import("../Node").NodeConfig>;
+    detach(): void;
+    _resetTransformCache(): void;
+    _getNodeRect(): any;
+    __getNodeRect(): {
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+        rotation: number;
+    };
+    getX(): any;
+    getY(): any;
+    getRotation(): any;
+    getWidth(): any;
+    getHeight(): any;
+    _createElements(): void;
+    _createAnchor(name: any): void;
+    _createBack(): void;
+    _handleMouseDown(e: any): void;
+    _handleMouseMove(e: any): void;
+    _handleMouseUp(e: any): void;
+    _removeEvents(e?: any): void;
+    _fitNodeInto(newAttrs: any, evt: any): void;
+    forceUpdate(): void;
+    update(): void;
+    isTransforming(): boolean;
+    stopTransform(): void;
+    destroy(): this;
+    toObject(): any;
+    enabledAnchors: GetSet<string[], this>;
+    rotationSnaps: GetSet<number[], this>;
+    anchorSize: GetSet<number, this>;
+    resizeEnabled: GetSet<boolean, this>;
+    rotateEnabled: GetSet<boolean, this>;
+    rotateAnchorOffset: GetSet<number, this>;
+    padding: GetSet<number, this>;
+    borderEnabled: GetSet<boolean, this>;
+    borderStroke: GetSet<string, this>;
+    borderStrokeWidth: GetSet<number, this>;
+    borderDash: GetSet<number[], this>;
+    anchorFill: GetSet<string, this>;
+    anchorStroke: GetSet<string, this>;
+    anchorCornerRadius: GetSet<number, this>;
+    anchorStrokeWidth: GetSet<number, this>;
+    keepRatio: GetSet<boolean, this>;
+    centeredScaling: GetSet<boolean, this>;
+    ignoreStroke: GetSet<boolean, this>;
+    boundBoxFunc: GetSet<(oldBox: IRect, newBox: IRect) => IRect, this>;
+}
+export {};

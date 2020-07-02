@@ -1,0 +1,100 @@
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Util_1 = require("../Util");
+var Factory_1 = require("../Factory");
+var Shape_1 = require("../Shape");
+var Validators_1 = require("../Validators");
+var Global_1 = require("../Global");
+var Image = (function (_super) {
+    __extends(Image, _super);
+    function Image() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Image.prototype._useBufferCanvas = function () {
+        return !!((this.hasShadow() || this.getAbsoluteOpacity() !== 1) &&
+            this.hasStroke() &&
+            this.getStage());
+    };
+    Image.prototype._sceneFunc = function (context) {
+        var width = this.width(), height = this.height(), image = this.image(), cropWidth, cropHeight, params;
+        if (image) {
+            cropWidth = this.cropWidth();
+            cropHeight = this.cropHeight();
+            if (cropWidth && cropHeight) {
+                params = [
+                    image,
+                    this.cropX(),
+                    this.cropY(),
+                    cropWidth,
+                    cropHeight,
+                    0,
+                    0,
+                    width,
+                    height
+                ];
+            }
+            else {
+                params = [image, 0, 0, width, height];
+            }
+        }
+        if (this.hasFill() || this.hasStroke()) {
+            context.beginPath();
+            context.rect(0, 0, width, height);
+            context.closePath();
+            context.fillStrokeShape(this);
+        }
+        if (image) {
+            context.drawImage.apply(context, params);
+        }
+    };
+    Image.prototype._hitFunc = function (context) {
+        var width = this.width(), height = this.height();
+        context.beginPath();
+        context.rect(0, 0, width, height);
+        context.closePath();
+        context.fillStrokeShape(this);
+    };
+    Image.prototype.getWidth = function () {
+        var image = this.image();
+        return this.attrs.width || (image ? image.width : 0);
+    };
+    Image.prototype.getHeight = function () {
+        var image = this.image();
+        return this.attrs.height || (image ? image.height : 0);
+    };
+    Image.fromURL = function (url, callback) {
+        var img = Util_1.Util.createImageElement();
+        img.onload = function () {
+            var image = new Image({
+                image: img
+            });
+            callback(image);
+        };
+        img.crossOrigin = 'Anonymous';
+        img.src = url;
+    };
+    return Image;
+}(Shape_1.Shape));
+exports.Image = Image;
+Image.prototype.className = 'Image';
+Global_1._registerNode(Image);
+Factory_1.Factory.addGetterSetter(Image, 'image');
+Factory_1.Factory.addComponentsGetterSetter(Image, 'crop', ['x', 'y', 'width', 'height']);
+Factory_1.Factory.addGetterSetter(Image, 'cropX', 0, Validators_1.getNumberValidator());
+Factory_1.Factory.addGetterSetter(Image, 'cropY', 0, Validators_1.getNumberValidator());
+Factory_1.Factory.addGetterSetter(Image, 'cropWidth', 0, Validators_1.getNumberValidator());
+Factory_1.Factory.addGetterSetter(Image, 'cropHeight', 0, Validators_1.getNumberValidator());
+Util_1.Collection.mapMethods(Image);

@@ -1,0 +1,17 @@
+.base-enter {
+  opacity: 0;
+}
+
+.base-enter-active {
+  opacity: 1;
+  transition: opacity 1000ms ease-in;
+}
+
+.base-exit {
+  opacity: 1;
+}
+
+.base-exit-active {
+  opacity: 0;
+  transition: opacity 1000ms ease-in;
+}
