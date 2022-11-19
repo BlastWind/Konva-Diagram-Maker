@@ -10,7 +10,7 @@
     "react-cx": "^0.1.12",
     "react-dom": "^16.7.0",
     "react-konva": "^16.8.7-3",
-    "react-scripts": "2.1.2",
+    "react-scripts": "5.0.1",
     "react-transition-group": "^4.3.0"
   },
   "scripts": {
